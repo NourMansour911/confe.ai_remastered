@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     GITHUB_TOKEN: str
     OPENROUTER_API_KEY: str
     
+    FILE_MAX_SIZE: int
+    FILE_ALLOWED_EXT:list
+    
     class Config:
         env_file = ".env"
         
