@@ -11,9 +11,9 @@ data_router = APIRouter(
 @data_router.post("/file/{project_id}",tags=["base"])
 async def upload_file(project_id: str ,file: UploadFile):
     
-    is_valid = DataController().validate_file(file=file)
+    response = DataController().validate_file(file=file)
 
     
-    return is_valid
+    return response
     
     

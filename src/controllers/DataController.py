@@ -1,6 +1,7 @@
 from .BaseController import BaseController
-from fastapi import UploadFile,HTTPException
-
+from fastapi import UploadFile,status,HTTPException
+from fastapi.responses import JSONResponse
+from models import ResponseEnum
 
 class DataController(BaseController):
     
@@ -10,13 +11,13 @@ class DataController(BaseController):
 
     def validate_file(self,file:UploadFile):
         
-        
-        if file.content_type not in self.settings.FILE_ALLOWED_EXT:
-            raise HTTPException(status_code=400, detail="Invalid File Format")
-            
         if file.size > self.settings.FILE_MAX_SIZE * self.size_scale:
-            raise HTTPException(status_code=400, detail="File Too Large")
-        
-        return True
+            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=
+            {"signal":ResponseEnum.FILE_SIZE_EXCEEDED.value})
+            
+        if file.content_type not in self.settings.FILE_ALLOWED_EXT:
+            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content= {"signal": ResponseEnum.FILE_TYPE_NOT_ALLOWED.value } )  
+           
+        return JSONResponse(status_code=status.HTTP_200_OK, content={"signal":ResponseEnum.FILE_VALID.value})
         
     
