@@ -12,12 +12,12 @@ class DataController(BaseController):
     def validate_file(self,file:UploadFile):
         
         if file.size > self.settings.FILE_MAX_SIZE * self.size_scale:
-            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=
+            return False,JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=
             {"signal":ResponseEnum.FILE_SIZE_EXCEEDED.value})
             
         if file.content_type not in self.settings.FILE_ALLOWED_EXT:
-            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content= {"signal": ResponseEnum.FILE_TYPE_NOT_ALLOWED.value } )  
+            return False,JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content= {"signal": ResponseEnum.FILE_TYPE_NOT_ALLOWED.value })  
            
-        return JSONResponse(status_code=status.HTTP_200_OK, content={"signal":ResponseEnum.FILE_VALID.value})
+        return True,JSONResponse(status_code=status.HTTP_200_OK, content={"signal":ResponseEnum.FILE_VALID.value})
         
     
